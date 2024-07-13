@@ -17,15 +17,15 @@ import org.testng.annotations.Test;
 
 import Base.Browser;
 import pageobjects.recipes;
-import LCHF.LCHF_elim_add_test;
+import LCHF.LCHF_ElimAddTest;
 
 
-public class commonBaseAtoZ {
+public class LCHFBaseAtoZ {
 	
 	recipes r;
 	WebDriver driver;
 	public static final ArrayList<String> AllreceipeUrlList = new ArrayList<>();
-	public LCHF_elim_add_test LCHFObj = new LCHF_elim_add_test();
+	public LCHF_ElimAddTest LCHFObj = new LCHF_ElimAddTest();
 	
 	@BeforeTest
 	public void launch() throws IOException {

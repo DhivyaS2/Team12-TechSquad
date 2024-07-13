@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import LCHF.commonBaseAtoZ;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
@@ -20,12 +19,11 @@ import org.testng.annotations.Test;
 import Base.Browser;
 import pageobjects.recipes;
 
-public class LCHF_elim_add_test {
+public class LCHF_ElimAddTest {
 	
 	public WebDriver driver;
 	public  ArrayList<String> elimateLCHF = new ArrayList<>();
 	public  List<String> AddListLCHF  = new ArrayList<>();
-	public commonBaseAtoZ commonAtoZObj = new commonBaseAtoZ();
 	public  int Keto_receipe_count=0;
 	
 	public static boolean containsEliminatedIngredient(List<String> recipeIngredients, List<String> eliminationList) {
@@ -67,12 +65,9 @@ public class LCHF_elim_add_test {
 						
 			boolean containsEliminatedIngredient = containsEliminatedIngredient(ingrediantsList, elimateLCHF);
 			
-			// Print the result
 			try {
 				if(!containsEliminatedIngredient) {
 					boolean containsAddIngredient = containsAddIngredient(ingrediantsList, AddListLCHF);
-					
-					System.out.println("****** "+AddListLCHF);
 					if(containsAddIngredient) {
 						 Keto_receipe_count= Keto_receipe_count+1;
 						//System.out.println("The recipe does not contain any ingredients from the elimination list.");
