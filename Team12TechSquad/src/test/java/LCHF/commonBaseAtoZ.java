@@ -27,8 +27,8 @@ public class commonBaseAtoZ {
 	public static final ArrayList<String> AllreceipeUrlList = new ArrayList<>();
 	public LCHF_elim_add_test LCHFObj = new LCHF_elim_add_test();
 	
-	 @BeforeTest
-	  public void launch() throws IOException {
+	@BeforeTest
+	public void launch() throws IOException {
 	  Browser b= new  Browser();
 	    b.beforescraping();
 	    b.launchsite();
@@ -36,18 +36,18 @@ public class commonBaseAtoZ {
 	  }
 	 
 	 @Test(priority=0)
-	 public  ArrayList ScrappingAtoZ() {
+	 public  ArrayList<String> ScrappingAtoZ() {
 		 
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
 		Actions actions = new Actions(driver);
+//		WebElement AtoZ = driver.findElement(By.xpath("//a[contains(@href,'RecipeAtoZ')]"));
+//		actions.moveToElement(AtoZ).click().perform();	
+
 		r.click_AtoZ(); 
-	//list of recipes in page
-	List<WebElement> list=	r.collect_recipelist();
-	List<String> Title = list.stream().map(s->s.getText()).collect(Collectors.toList());
-	//System.out.println(Title);	
 	
 	AllreceipeUrlList.clear();
 	driver.findElement(By.xpath("//a[normalize-space()='C']")).click();
+	
     WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
     WebElement currentPage = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@class='rescurrpg']")));
 
@@ -81,6 +81,7 @@ public class commonBaseAtoZ {
 	return AllreceipeUrlList;
 	 }
 	
+	 @Test(priority=1)
 	public void callLCHFTestcase() throws InterruptedException, IOException {
 		LCHFObj.EliminateLCHF_fn(AllreceipeUrlList);
 		

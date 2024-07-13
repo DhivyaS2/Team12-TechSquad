@@ -46,16 +46,12 @@ public class LCHF_elim_add_test {
 	}
 
 	//Iterate througough all the urls Collected......
-	public  void EliminateLCHF_fn(ArrayList<String> AllreceipeUrlList) throws InterruptedException, IOException {
+	public void EliminateLCHF_fn(ArrayList<String> AllreceipeUrlList) throws InterruptedException, IOException {
+			
 		
-		AddListLCHF.add("fish");
-		AddListLCHF.add("paneer");
-		AddListLCHF.add("butter");
-		AddListLCHF.add("onion");
+		elimateLCHF = ExcelReader.ExcelReaderHelper("Final list for LCHFElimination","Eliminate");
+		AddListLCHF = ExcelReader.ExcelReaderHelper("Final list for LCHFElimination","Add");
 		
-		
-		elimateLCHF = readLCHFEliminateData();
-		System.out.println("eliminate array: "+elimateLCHF);
 		List<String> ingrediantsList = new ArrayList<> ();
 		
 		for(String eachUrl : AllreceipeUrlList) {
@@ -68,10 +64,7 @@ public class LCHF_elim_add_test {
 				String ingrediant = each_ingrediant.getText().toLowerCase();
 				ingrediantsList.add(ingrediant);
 			}
-			
-			//System.out.println("Ingrediants : "+ingrediantsList);
-				
-			
+						
 			boolean containsEliminatedIngredient = containsEliminatedIngredient(ingrediantsList, elimateLCHF);
 			
 			// Print the result
@@ -96,9 +89,7 @@ public class LCHF_elim_add_test {
 			            
 					}else {
 						System.out.println("Ingrediants not in add List");
-					}
-	        	       		      	
-	            
+					}            
 				} else {
 	        	System.out.println("The recipe contain any ingredients from the elimination list.");
 	            
@@ -108,7 +99,7 @@ public class LCHF_elim_add_test {
 					e.printStackTrace();
 				}
 			
-			System.out.println("No: of Keto receipe scrapped: "+Keto_receipe_count);
+			System.out.println("No: of LCHF(Keto) receipe scrapped: "+Keto_receipe_count);
 			}
 			//}
 			
@@ -117,7 +108,7 @@ public class LCHF_elim_add_test {
 		
 		}
 	
-	public  ArrayList readLCHFEliminateData() throws IOException {
+/*	public  ArrayList readLCHFEliminateData() throws IOException {
 		
 		String excelPath = "C:\\Users\\anoop\\Downloads\\IngrediantsEliminate.xlsx";
 	    FileInputStream inputStream = new FileInputStream(excelPath);
@@ -139,7 +130,7 @@ public class LCHF_elim_add_test {
 	    }
 	    return elimateLCHF;
 	}
-	
+	*/
 		 
 	}
 
