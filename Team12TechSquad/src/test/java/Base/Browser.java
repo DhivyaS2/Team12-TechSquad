@@ -39,7 +39,7 @@ public void beforescraping() throws IOException {
 		public static void quitdriver() {
 			driver.close();
 		}
-				public void launchsite() throws IOException {
+		public void launchsite() throws IOException {
 			url = CommonFunction.getUrl();
 			driver.get(url);
 	
