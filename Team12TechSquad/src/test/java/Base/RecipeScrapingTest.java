@@ -57,7 +57,7 @@ public class RecipeScrapingTest {
 	    
 	    System.out.println("maximum size:"+maxpage);
 	    
-	    for(int pageno=22;pageno<=maxpage;pageno++)
+	    for(int pageno=1;pageno<=maxpage;pageno++)
 	    {
 	    List<String> recipeUrls = homepage.getrecipeurls(pageno);
 	    	        arrayallurls.addAll(recipeUrls);
