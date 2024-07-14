@@ -1,4 +1,4 @@
-package pageobjects;
+package Utility;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class ExcelReader {
 			}
 
 			// Find the column index based on column name
-			Row headerRow = sheet.getRow(0);
+			Row headerRow = sheet.getRow(1);
 			int columnIndex = -1;
 			for (Cell cell : headerRow) {
 				if (cell.getStringCellValue().equalsIgnoreCase(columnName)) {
