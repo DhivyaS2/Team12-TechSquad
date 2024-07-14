@@ -12,6 +12,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import Utility.CommonFunction;
+
 public class ExcelReader {
 
 	public static ArrayList<String> ExcelReaderHelper(String sheetName, String columnName) {
@@ -19,9 +21,16 @@ public class ExcelReader {
 		ArrayList<String> excelList = new ArrayList<String>();
 
 		System.out.println("Inside ExcelReader");
-		String excelFilePath = "C:\\MyProject\\IngredientsAndComorbidities-ScrapperHackathon.xlsx";
+		//String excelFilePath = "C:\\MyProject\\IngredientsAndComorbidities-ScrapperHackathon.xlsx";
 		// String sheetName = "Final list for LCHFElimination "; // Name of the sheet
 		// String columnName = "Add"; // Name of the column
+		String excelFilePath="";
+		try {
+			excelFilePath = CommonFunction.getexcelfilepath();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		try (FileInputStream fis = new FileInputStream(excelFilePath); Workbook workbook = new XSSFWorkbook(fis)) {
 
