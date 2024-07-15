@@ -52,18 +52,16 @@ public class LCHFBaseAtoZ {
     WebElement currentPage = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@class='rescurrpg']")));
 
     boolean hasNextPage = true;
+    int pageCount =0;
     while (hasNextPage) {
         try {
+        	pageCount= pageCount+1;
             List<WebElement> CurrPageRecipeList = driver.findElements(By.xpath("//*[@class ='rcc_recipecard']"));
-            System.out.println("No: of receipes in currentPage:" + CurrPageRecipeList.size());
-
-            for (WebElement eachRecipe : CurrPageRecipeList) {
-                WebElement recipeNameElement = eachRecipe.findElement(By.xpath(".//span[@class='rcc_recipename']"));
-                List <WebElement> urlLinks = driver.findElements(By.xpath("//span[@class='rcc_recipename']/a"));
+            //System.out.println("No: of receipes in currentPage:" + CurrPageRecipeList.size());
+               List <WebElement> urlLinks = driver.findElements(By.xpath("//span[@class='rcc_recipename']/a"));
                 for (WebElement webElementlink : urlLinks) {
 					AllreceipeUrlList.add(webElementlink.getAttribute("href"));					
                 }	
-            }
             try {
                 WebElement nextBtn = driver.findElement(By.xpath("//*[@class='rescurrpg']/following-sibling::a"));
                 nextBtn.click();
@@ -77,7 +75,8 @@ public class LCHFBaseAtoZ {
             hasNextPage = false;
         }
     }
-    System.out.println("Total URLs in array -> "+AllreceipeUrlList.size());	
+    System.out.println("Total No: of pages :-> "+pageCount);
+    System.out.println("Total URLs in array :-> "+AllreceipeUrlList.size());	
 	return AllreceipeUrlList;
 	 }
 	

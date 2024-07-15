@@ -47,8 +47,8 @@ public class LCHF_ElimAddTest {
 	public void EliminateLCHF_fn(ArrayList<String> AllreceipeUrlList) throws InterruptedException, IOException {
 			
 		
-		elimateLCHF = ExcelReader.ExcelReaderHelper("Final list for LCHFElimination","Eliminate");
-		AddListLCHF = ExcelReader.ExcelReaderHelper("Final list for LCHFElimination","Add");
+		elimateLCHF = ExcelReader.ExcelReaderHelper("Final list for LCHFElimination ","Eliminate");
+		AddListLCHF = ExcelReader.ExcelReaderHelper("Final list for LCHFElimination ","Add");
 		
 		List<String> ingrediantsList = new ArrayList<> ();
 		
@@ -69,18 +69,41 @@ public class LCHF_ElimAddTest {
 				if(!containsEliminatedIngredient) {
 					boolean containsAddIngredient = containsAddIngredient(ingrediantsList, AddListLCHF);
 					if(containsAddIngredient) {
-						 Keto_receipe_count= Keto_receipe_count+1;
-						//System.out.println("The recipe does not contain any ingredients from the elimination list.");
-			           
+						 
+					 try {
+						 
+						String[] splitstr=eachUrl.split("-");
+						String last=splitstr[splitstr.length-1];
+						String receipe_id=last.substring(0,last.length()-1);
 						String receipe_Name = driver.findElement(By.xpath("//span[@id='ctl00_cntrightpanel_lblRecipeName']")).getText();
+						
+						String receipe_ingrediants = ingrediantsList.stream().map(Object::toString)
+		                        .collect(Collectors.joining(", "));
+						
 						String prep_time = driver.findElement(By.cssSelector("time[itemprop='prepTime']")).getText();
 						String cook_time = driver.findElement(By.cssSelector("time[itemprop='cookTime']")).getText();
 						String tags = driver.findElement(By.xpath("//div[@id='recipe_tags']/a/span")).getText();
+						String Num_serves =  driver.findElement(By.xpath("//span[@id='ctl00_cntrightpanel_lblServes']")).getText();
+						String receipe_desc = driver.findElement(By.xpath("//p[@id='recipe_description']")).getText();
+						String receipe_method = driver.findElement(By.xpath("//div[@id='ctl00_cntrightpanel_pnlRcpMethod']/div[1]")).getText();
+						String nutrientsList = driver.findElement(By.xpath("//*[@id='rcpnutrients']")).getText();
+						
+						System.out.println("**Receipe ID:  " + receipe_id);
 						System.out.println("**Receipe Name:  " + receipe_Name);
+						System.out.println("**Receipe Ingred:  " + receipe_ingrediants);
 						System.out.println("**prep_time:  " + prep_time);
 						System.out.println("**cook_time:  " + cook_time);
 						System.out.println("**tags:  " + tags);
+						System.out.println("**No: servings:  " + Num_serves);
+						System.out.println("**Receipe Desc:  " + receipe_desc);
+						System.out.println("**Receipe Method:  " + receipe_method);
+						System.out.println("**Nutrients List:  " + nutrientsList);
 						
+						Keto_receipe_count= Keto_receipe_count+1;
+					 }
+					 catch (Exception e) {
+						 e.printStackTrace();
+					 }
 			            
 					}else {
 						System.out.println("Ingrediants not in add List");

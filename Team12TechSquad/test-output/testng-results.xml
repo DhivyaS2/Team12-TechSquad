@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2024-07-13T18:09:52 EDT" name="Default suite" finished-at="2024-07-13T18:09:59 EDT" duration-ms="6980">
+    <groups>
+    </groups>
+    <test started-at="2024-07-13T18:09:52 EDT" name="Default test" finished-at="2024-07-13T18:09:59 EDT" duration-ms="6980">
+      <class name="LCHF.LCHFBaseAtoZ">
+        <test-method is-config="true" signature="launch()[pri:0, instance:LCHF.LCHFBaseAtoZ@20deea7f]" started-at="2024-07-13T18:09:52 EDT" name="launch" finished-at="2024-07-13T18:09:57 EDT" duration-ms="5415" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- launch -->
+        <test-method signature="callLCHFTestcase()[pri:1, instance:LCHF.LCHFBaseAtoZ@20deea7f]" started-at="2024-07-13T18:09:57 EDT" name="callLCHFTestcase" finished-at="2024-07-13T18:09:59 EDT" duration-ms="1491" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- callLCHFTestcase -->
+      </class> <!-- LCHF.LCHFBaseAtoZ -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>
