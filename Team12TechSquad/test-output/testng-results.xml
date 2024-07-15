@@ -2,20 +2,20 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2024-07-10T22:23:13 EDT" name="Default suite" finished-at="2024-07-10T22:23:57 EDT" duration-ms="44078">
+  <suite started-at="2024-07-14T23:31:49 EDT" name="Default suite" finished-at="2024-07-14T23:33:16 EDT" duration-ms="87661">
     <groups>
     </groups>
-    <test started-at="2024-07-10T22:23:13 EDT" name="Default test" finished-at="2024-07-10T22:23:57 EDT" duration-ms="44078">
-      <class name="Base.AtoZrecipes">
-        <test-method is-config="true" signature="launch()[pri:0, instance:Base.AtoZrecipes@3c407114]" started-at="2024-07-10T22:23:13 EDT" name="launch" finished-at="2024-07-10T22:23:43 EDT" duration-ms="30364" status="PASS">
+    <test started-at="2024-07-14T23:31:49 EDT" name="Default test" finished-at="2024-07-14T23:33:16 EDT" duration-ms="87661">
+      <class name="Base.Scraping">
+        <test-method is-config="true" signature="launch()[pri:0, instance:Base.Scraping@5656be13]" started-at="2024-07-14T23:31:49 EDT" name="launch" finished-at="2024-07-14T23:32:01 EDT" duration-ms="12047" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- launch -->
-        <test-method signature="Scrapping()[pri:0, instance:Base.AtoZrecipes@3c407114]" started-at="2024-07-10T22:23:43 EDT" name="Scrapping" finished-at="2024-07-10T22:23:57 EDT" duration-ms="13699" status="PASS">
+        <test-method signature="Scrapping()[pri:0, instance:Base.Scraping@5656be13]" started-at="2024-07-14T23:32:01 EDT" name="Scrapping" finished-at="2024-07-14T23:33:16 EDT" duration-ms="75529" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- Scrapping -->
-      </class> <!-- Base.AtoZrecipes -->
+      </class> <!-- Base.Scraping -->
     </test> <!-- Default test -->
   </suite> <!-- Default suite -->
 </testng-results>

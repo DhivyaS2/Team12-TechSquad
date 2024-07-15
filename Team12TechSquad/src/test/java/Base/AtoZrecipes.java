@@ -24,7 +24,7 @@ public class AtoZrecipes {
 	 
 	 @Test
 	 public void Scrapping() {
-		r.click_AtoZ(); 
+		 r.click_AtoZ();  
 	//list of recipes in page
 	List<WebElement> list=	r.collect_recipelist();
 	List<String> Title = list.stream().map(s->s.getText()).collect(Collectors.toList());
