@@ -7,12 +7,12 @@ import org.openqa.selenium.WebElement;
 
 import Base.Browser;
 
-public class recipes {
+public class Recipes {
 
 
-	  By recipes = By.xpath("//*[text()='Recipe A To Z']");
-	  By recipes_list= By.className("rcc_recipename");
-	 
+	  By recipes = By.xpath("//a[text()='Recipe A To Z']");
+	  By recipes_list= By.xpath("//span[@class='rcc_recipename']/a");
+	 By ingredients_list = By.xpath("//div[@id='recipe_ingredients']");
 	 
 	  
 public   void click_AtoZ() {
@@ -24,5 +24,8 @@ public   void click_AtoZ() {
 public List<WebElement> collect_recipelist() {
 return	Browser.driver.findElements(recipes_list);
 	
+}
+public List<WebElement> Collect_ingredientsList(){
+	return Browser.driver.findElements(ingredients_list);
 }
 }

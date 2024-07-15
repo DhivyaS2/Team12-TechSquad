@@ -12,14 +12,14 @@ import org.testng.annotations.Test;
 import pageobjects.*;
 
 public class AtoZrecipes {
-	recipes r;
+	Recipes r;
 	WebDriver driver;
 	 @BeforeTest
 	  public void launch() throws IOException {
 	  Browser b= new  Browser();
 	    b.beforescraping();
 	    b.launchsite();
-	   r= new recipes();
+	   r= new Recipes();
 	  }
 	 
 	 @Test
