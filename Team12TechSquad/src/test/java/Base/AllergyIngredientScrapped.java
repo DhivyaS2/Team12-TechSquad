@@ -53,7 +53,7 @@ public class AllergyIngredientScrapped {
 	allergyIngredients.add("soy");
 	allergyIngredients.add("almond");
 	
-	//List<String> listOfCommonItems = (List<String>) CollectionUtils.intersection(ingredients, allergyIngredients) ; 
+	List<String> listOfCommonItems = (List<String>) CollectionUtils.intersection(ingredients, allergyIngredients) ; 
 	
 	
 	breaklevel:
