@@ -3,12 +3,12 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="Base.Scraping">
+      <class name="Base.AllergyIngredientScrapped">
         <methods>
           <include name="launch"/>
           <include name="Scrapping"/>
         </methods>
-      </class> <!-- Base.Scraping -->
+      </class> <!-- Base.AllergyIngredientScrapped -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

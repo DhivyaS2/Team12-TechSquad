@@ -13,6 +13,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import Utility.ExcelReader;
 import pageobjects.Recipes;
 
 public class AllergyIngredientScrapped {
@@ -26,9 +27,24 @@ public class AllergyIngredientScrapped {
 	   r= new Recipes();
 	  }
 	 
+	
+	 
+	 
+//	 public static boolean containsallergyIngredients(List<String>  ingredients, List<String> allergyIngredients) {
+//		    for (String ingredient : allergyIngredients) {
+//		        if (ingredients.contains(ingredient)) {
+//		            return true;
+//		        }
+//		    }
+//		    return false;
+//		}
+	 	 
 	 @Test
 	 public void Scrapping() {
 		r.click_AtoZ(); 
+		
+		
+		
 	//list of recipes in page
 	List<WebElement> list=	r.collect_recipelist();
 	
@@ -47,26 +63,34 @@ public class AllergyIngredientScrapped {
 	List<String>  ingredients = listIngredients.stream().map(s->s.getText()).collect(Collectors.toList());
 	System.out.println(ingredients);
 	
+	ArrayList<String> allergyIngredients = new ArrayList<String>( );
 	
-	List<String> allergyIngredients = new ArrayList<String>();
-	allergyIngredients.add("milk");
-	allergyIngredients.add("soy");
-	allergyIngredients.add("almond");
-	
-	List<String> listOfCommonItems = (List<String>) CollectionUtils.intersection(ingredients, allergyIngredients) ; 
+	allergyIngredients = ExcelReader.ExcelReaderHelper("Filter -1 Allergies - Bonus Poi", "Allergies (Bonus points)");
+	System.out.println("Allergy ingredients list :" + allergyIngredients);
 	
 	
+//	allergyIngredients.add("milk");
+//	allergyIngredients.add("soy");
+//	allergyIngredients.add("almond");
+	
+	//List<String> listOfCommonItems = (List<String>) CollectionUtils.intersection(ingredients, allergyIngredients) ; 
+	
+	
+	 
 	breaklevel:
 	for (String eachingredient: ingredients)
 	  {
 		  for(String eachallergyfilter: allergyIngredients) {
-			boolean filter= eachingredient.contains(eachallergyfilter) ;
-			 System.out.println(filter);
-			 if(filter==true) {
+			boolean containsallergyIngredients= eachingredient.contains(eachallergyfilter) ;
+			 System.out.println(containsallergyIngredients);
+			 if(containsallergyIngredients==true) {
 				 break breaklevel;
 			 }
+			 
+				
 		  }
-	//boolean containsallergyIngredients = containsallergyIngredients(ingredients, allergyIngredients);
+		  
+	
 	
 //	if (!containsallergyIngredients){
 //		System.out.println("recipeList "+ingredients);
@@ -84,7 +108,8 @@ public class AllergyIngredientScrapped {
 
 
 	
-	 }}
+	 }
+	 }
 		   
 		 
 	
