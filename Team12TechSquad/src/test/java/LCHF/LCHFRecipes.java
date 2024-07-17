@@ -20,6 +20,8 @@ import org.openqa.selenium.Alert;
 import Base.Browser;
 import pageobjects.LCHF_PageObjects;
 import Utility.ExcelReader;
+import Utility.LoggerLoad;
+
 
 public class LCHFRecipes {
 	
@@ -33,7 +35,7 @@ public class LCHFRecipes {
 	
 	@BeforeTest
 	public void launch() throws IOException, ClassNotFoundException, SQLException {
-		System.out.println("Before Test*********************");
+		
 		Browser b= new  Browser();
 	    b.beforescraping();
 	    b.launchsite();
@@ -41,11 +43,12 @@ public class LCHFRecipes {
 	    CRUD_DB db= new CRUD_DB();
 	    db.connect();
 	    db.create_table();
+	    LoggerLoad.logInfo("LCHF Before Test Excecuted");
 	  }
 	 
 	
 	//Iterating through A to Z and storing the URLs in an Arraylist
-	@Test(priority=0)
+	//@Test(priority=0)
 	 public  void AScrappingAtoZ() throws InterruptedException, IOException {
 
 		System.out.println("Title "+ Browser.driver.getTitle());
@@ -89,23 +92,28 @@ public class LCHFRecipes {
 	                currentPage = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@class='rescurrpg']")));
 	            } catch (Exception e) {
 	                hasNextPage = false;
+	                LoggerLoad.logError("Exception captured :"+e.getMessage());
+	    	    	
 	            }
 	        }catch (UnhandledAlertException e) {
 	            	// Handle the alert if it appears during the loop
 	            try {
 	                Alert alert = Browser.driver.switchTo().alert();
-	                System.out.println("Unexpected alert: " + alert.getText());
+	                LoggerLoad.logError("Unexpected alert:" + alert.getText());
 	                alert.dismiss(); 
 	            } catch (NoAlertPresentException ex) {
-	                System.out.println("No alert present.");
+	            	LoggerLoad.logError("No alert present.");
 	            }
 	            hasNextPage = false;
 	        } 
 	    }// loop ending of All pages in an Alphabet
-	    System.out.println("No: of Pages in letter : "+letter+" is : "+pageCount);
+	    LoggerLoad.logInfo("No: of Pages in letter : "+letter+" is : "+pageCount);
     	
-	} // loop ending of All Alphabet
+	} // loop ending of All Alphabet 
+		LoggerLoad.logInfo("Sucessfully Iterated from A to Z");
+    
 	  }catch(Exception e) {
+		  LoggerLoad.logError("Exception captured while looping A to Z:"+e.getMessage());
 	    	e.printStackTrace();
 	    }
 	}
@@ -186,8 +194,9 @@ public class LCHFRecipes {
 		ArrayList<String> tagsList = new ArrayList<> ();
 		
 		System.out.println("Total URLs Collected is : "+AllrecipeUrlList.size());
+		LoggerLoad.logInfo("Total URLs Collected is : "+AllrecipeUrlList.size());
 		int checkCount=0;
-		for(String eachUrl : AllrecipeUrlList) {		
+		for(String eachUrl : AllrecipeUrlList) {	
 			ingrediantsList.clear();
 			Browser.driver.get(eachUrl);
 			try {
@@ -197,10 +206,10 @@ public class LCHFRecipes {
 	            // Handle the alert if it appears during the loop
 	            try {
 	                Alert alert = Browser.driver.switchTo().alert();
-	                System.out.println("Unexpected alert: " + alert.getText());
-	                alert.accept(); // or alert.dismiss();
+	                LoggerLoad.logError("Unexpected alert: " + alert.getText());
+	                alert.dismiss();
 	            } catch (NoAlertPresentException ex) {
-	                System.out.println("No alert present.");
+	            	LoggerLoad.logError("No alert present.");
 	            }
 			}
 			boolean containsEliminatedIngredient = LCHFChckIngredientList(ingrediantsList, elimateLCHF);
@@ -217,7 +226,7 @@ public class LCHFRecipes {
 						String id = LCHFpgObj.getRecipeID(eachUrl);
 						
 						String name = LCHFpgObj.getRecipeName();
-						System.out.println("**Name :"+name);
+						LoggerLoad.logError("**Name :"+name);
 						try {
 							tagsList = LCHFpgObj.getTags();
 						}catch(Exception e) {
@@ -279,11 +288,14 @@ public class LCHFRecipes {
 						System.out.println("Current No of Keto recipe is : "+Keto_recipe_count);
 						try {
 							db.insert_table(id,name,recipeCategory,foodCategory,recipe_ingrediants,prep_time,cook_time,tags,servings,cuisineCategory,desc,methods,nutrients,eachUrl);
+							LoggerLoad.logInfo("Sucessfully inserted a LCHF(Keto)Receipe");
 						} catch (Exception e) {
 							e.printStackTrace();
+							LoggerLoad.logError(e.getMessage());
 						}
 					}catch (Exception e) {
 						e.printStackTrace();
+						LoggerLoad.logError(e.getMessage());
 					}
 					}else {
 						System.out.println("Recipe ingrediant is not present in add list");
@@ -294,11 +306,13 @@ public class LCHFRecipes {
 				}
 				}catch(Exception e){
 					e.printStackTrace();
+					LoggerLoad.logError("Exception caught while validating Eliminate & Add List :"+e.getMessage());
 				}
 			checkCount= checkCount+1;
 		} // end of eachURL Iteration	
-		System.out.println("Number of Recipe Url Scanned :"+checkCount);
-		System.out.println("Total No: of LCHF(Keto) recipe scrapped: "+Keto_recipe_count);
-} 
+		LoggerLoad.logInfo("Number of Recipe Url Scanned :"+checkCount);
+		LoggerLoad.logInfo("Total No: of LCHF(Keto) recipe scrapped: "+Keto_recipe_count);
+		
+	} 
 	
 }
