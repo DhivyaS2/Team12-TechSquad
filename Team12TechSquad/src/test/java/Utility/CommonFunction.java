@@ -26,7 +26,7 @@ public class CommonFunction {
 		String browseroptions = prop.getProperty("headless");
 		return browseroptions;
 	}
-	
+
 	public static String getUrl() throws IOException {
 		
 		String url = prop.getProperty("URL");
@@ -55,5 +55,14 @@ public class CommonFunction {
 	
 	
 	
-	
+
+	public static String getexcelfilepath() throws IOException {
+		readConfig();
+		String excelfilelpath = prop.getProperty("excelfilepath");
+		if (excelfilelpath != null)
+			return excelfilelpath;
+		else
+			throw new RuntimeException("Excel file path not specified in the Config.properties file.");
+	}
+
 }
