@@ -3,12 +3,12 @@
 <suite name="Failed suite [Default suite]" guice-stage="DEVELOPMENT">
   <test thread-count="5" name="Default test(failed)">
     <classes>
-      <class name="Base.AtoZrecipes">
+      <class name="Base.RecipeScrapingTest">
         <methods>
-          <include name="launch"/>
-          <include name="Scrapping"/>
+          <include name="testgetrecipes"/>
+          <include name="setup"/>
         </methods>
-      </class> <!-- Base.AtoZrecipes -->
+      </class> <!-- Base.RecipeScrapingTest -->
     </classes>
   </test> <!-- Default test(failed) -->
 </suite> <!-- Failed suite [Default suite] -->

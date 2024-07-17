@@ -1,5 +1,6 @@
 package Base;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -14,62 +15,65 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
+import Utility.ExcelReader;
 import pageobjects.HomePage;
+import database_conn.Jdbc_recipedb;
 
 public class RecipeScrapingTest {
 	
 	private HomePage homepage;
+	private Jdbc_recipedb db;
 	private WebDriver driver;
-	
+	String RecipeID;
+	String RecipeName;
+	String RecipeCategory;
+	String CusineCategory;
+	String servingsize;
+	 String prepmethod;
+	 String nutrivalues;
+	 String FoodCategory;
+	 List<String> Ingredients = new ArrayList<>();
+	List<String> excel_list;
 	@BeforeClass
-	public void setup() throws IOException
+	public void setup() throws IOException, ClassNotFoundException, SQLException
 	{
 		Browser b= new  Browser();
 	    b.beforescraping();
 	    b.launchsite();
+	   // excel_list=ExcelReader.reader(); 
 	    homepage=new HomePage();
+	    db=new Jdbc_recipedb();
+	    db.connect();
 	    
+	    db.create_table();
 	}
-	///List<WebElement> list = homepage.collectrecipes();
-			//ArrayList<WebElement> arrayList = new ArrayList<>(list);
-	        //List<String> Titles = new ArrayList<>();
-	        
-	        //List<String> allRecipeUrls = new ArrayList<>();
+	
 	@Test
 	public void testgetrecipes() throws InterruptedException, IOException
 	{
+		
+		int maxpage;
 		ArrayList<String>arrayallurls=new ArrayList<>();
 		homepage.recipeall();
-		int maxpage;
-		List<String> allRecipeUrls = new ArrayList<>();
-	   
 		
-	//int pageNumber=1;
-		//for (char index = 'A'; index <= 'Z'; index++) {
-//	        String indexString = String.valueOf(index);
-//	        homepage.clickAlphabeticalIndex(indexString);
-	       
+		
+		
+		//***************
+		
+	
+			
+		List<String> allRecipeUrls = new ArrayList<>();
+//	   
+//		List<WebElement> paginationLinks = homepage.returnpages();
+//	    maxpage=paginationLinks.size();
+	    
+	    //System.out.println("maximum size:"+maxpage);
+	    
 
-	        
-	    List<WebElement> paginationLinks = homepage.returnpages();
-	    maxpage=paginationLinks.size();
-	    
-	    System.out.println("maximum size:"+maxpage);
-	    
-	    for(int pageno=1;pageno<=maxpage;pageno++)
-	    {
-	    List<String> recipeUrls = homepage.getrecipeurls(pageno);
+	    List<String> recipeUrls = homepage.getrecipeurls();
 	    	        arrayallurls.addAll(recipeUrls);
 	    	        Thread.sleep(2000);
-	    	        //System.out.println("Collected " + arrayallurls.size() + " URLs from page " + pageNumber);
-	    	        //System.out.println(arrayallurls);
-	    	       // Thread.sleep(2000);
-	    }
-
-		
-//		System.out.println("Collected " + arrayallurls.size() );
-//        System.out.println(arrayallurls);
+	    	    
 	
 
 	   for (String url : arrayallurls) {
@@ -77,9 +81,10 @@ public class RecipeScrapingTest {
                 homepage.navigatetorecipedetailspage(url);
                 
                 
-
+                
 
         List<String>elminlist=homepage.getleliminationList();
+      
         ArrayList<String>Elminationitems=new ArrayList<>(elminlist);
         
             List<String> ingredientsList = homepage.getingredientsrecipe(url);
@@ -88,8 +93,10 @@ public class RecipeScrapingTest {
             for(String ingredients:arrayingredients)
             for(String Elminationlist: Elminationitems ) {
             	
+            	
             	{
-            		 if (ingredients.toLowerCase().contains(Elminationlist.toLowerCase())) {
+            		 if (ingredients.contains(Elminationlist)) {
+            		//if (ingredients.toLowerCase().contains(excelItem .toLowerCase())) {
                          containsElimination = true;
                          break;
             	}
@@ -103,16 +110,104 @@ public class RecipeScrapingTest {
             if (containsElimination) {
             	
                 
-                System.out.println("Contains elimination list. Skipping details.");}
+                System.out.println("Contains elimination list. Skipping details.");
+                }
              else {
             	 
             	 //1:Recipe ID
             	 	String RecipeID=homepage.extractrecpieno(url);
             	 	System.out.println("Recipe ID:"+RecipeID);
             	 //2:RecipeName
-            	 	String RecipeName=homepage.getrecipename();
-            	    System.out.println("Recipe Title: " + RecipeName);
-//            //Tags
+            		try
+            	    {
+            	 	RecipeName=homepage.getrecipename();
+            	    }catch (NoSuchElementException e)
+            		{
+            	    	RecipeName="N/A";
+            	    	System.out.println("No name Found " + url);
+            		}
+            		System.out.println("Recipe Title: " + RecipeName);
+            		
+            		//3RecipeCategory
+            		
+            		try
+            	    {
+            	 	RecipeCategory=homepage.getrecipecatgories();
+            	    }catch (NoSuchElementException e)
+            		{
+            	    	RecipeCategory="N/A";
+            	    	System.out.println("No category Found " + url);
+            		}
+            		System.out.println("Recipe Category: " + RecipeCategory);
+            		
+            		
+//            		try
+//            	    {
+//            	 	RecipeCategory=homepage.getrecipecategory();
+//            	    }catch (NoSuchElementException e)
+//            		{
+//            	    	RecipeCategory="N/A";
+//            	    	System.out.println("No category Found " + url);
+//            		}
+//            		System.out.println("Recipe Category: " + RecipeCategory);
+//            		
+            		//4Food Category(Veg/non-veg/vegan/Jain)
+            		
+            		try
+            	    {
+            	 	FoodCategory=homepage.getfoodcatgories();
+            	    }catch (NoSuchElementException e)
+            		{
+            	    	FoodCategory="N/A";
+            	    	System.out.println("No category Found " + url);
+            		}
+            		System.out.println("Food Category: " + FoodCategory);
+            		
+            		//5 Ingredients
+//            		System.out.println("Ingredients for " + url + ":");
+//                    for (String ingredient : arrayingredients) {
+//                        System.out.println("- " + ingredient);
+            		
+            		String Ingredients = "";
+            		List<WebElement>ingelement=homepage.gettheingredients();
+            		for(WebElement inglist:ingelement)
+            		
+        			try
+            		{
+            		Ingredients=inglist.getText().trim();
+            		}catch (NoSuchElementException e) {
+            			Ingredients = "N/A"; // Default value when preparation time is not found
+            		  System.out.println("No Ingredients Found " + url);
+            		  
+            		}
+            		
+            		System.out.println("Ingredients:"+Ingredients);
+
+            		
+            		
+            		
+            		
+            		//6 & 7  preperation and cooking time 
+            		String preparationTime;
+                    try {
+                        preparationTime = homepage.getpreptime();
+                    } catch (NoSuchElementException e) {
+                        preparationTime = "N/A"; // Default value when preparation time is not found
+                        System.out.println("Preparation Time not found for " + url);
+                    }
+                    System.out.println("Preparation Time: " + preparationTime);
+                    String cookingTime;
+                    try {
+                        cookingTime = homepage.getcookingtime();
+                    } catch (NoSuchElementException e) {
+                        cookingTime = "N/A"; // Default value when cooking time is not found
+                        System.out.println("Cooking Time not found for " + url);
+                    }
+
+                   System.out.println("Cooking Time: " + cookingTime);
+                    
+                    
+                    // 8 Tags
             	    List<WebElement>tagelements=homepage.getrecipetags();
             	    String Tags = "";
             	    for(WebElement taglist:tagelements)
@@ -127,62 +222,80 @@ public class RecipeScrapingTest {
             	 }
              
             	   System.out.println("Tags:"+Tags);
-            	 //servings
-            	    String servingsize=homepage.gettotalservings();
-            	    System.out.println("No Of Servings:"+servingsize);
-            	    //Recipeurl
-            	    System.out.println("Recipe URL:"+url);
-            	    //Preperation method
-            	    String prepmethod=homepage.getpreperationmethod();
-            	    System.out.println("Preperation Methos:"+prepmethod);
-            	
-            	    
-            	    
-            	    //Ingredients
-            	 System.out.println("Ingredients for " + url + ":");
-                 for (String ingredient : arrayingredients) {
-                     System.out.println("- " + ingredient);
-                    //Recipe Description
-                     String recipesteps=homepage.getrecipedescription();
-                     System.out.println("Recipe Description:"+recipesteps);
-                     
-                     String preparationTime;
-                     try {
-                         preparationTime = homepage.getpreptime();
-                     } catch (NoSuchElementException e) {
-                         preparationTime = "N/A"; // Default value when preparation time is not found
-                         System.out.println("Preparation Time not found for " + url);
-                     }
-                     
-                     String cookingTime;
-                     try {
-                         cookingTime = homepage.getcookingtime();
-                     } catch (NoSuchElementException e) {
-                         cookingTime = "N/A"; // Default value when cooking time is not found
-                         System.out.println("Cooking Time not found for " + url);
-                     }
+           
+            		
+          	   
+            	 //9.servings
+            	   try
+           	    {
+            	   servingsize=homepage.gettotalservings();
+           	    }catch (NoSuchElementException e) {
+           	    	servingsize = "N/A"; // Default value when preparation time is not found
+          	      System.out.println("No servingsize Found " + url);
+           	    }
+                System.out.println("No Of Servings:"+servingsize);
+                
+                //10.Cuisine category
+               
+                try
+        	    {
+        	 	CusineCategory=homepage.getcusinelist();
+        	    }catch (NoSuchElementException e)
+        		{
+        	    	RecipeCategory="N/A";
+        	    	System.out.println("No category Found " + url);
+        		}
+        		System.out.println("Cusine Category: " + CusineCategory);
+                
+              //11 Recipe Description
+                String recipesteps;
+                try {
+                recipesteps=homepage.getrecipedescription();
+                }catch (NoSuchElementException e)
+               		 {
+               	 recipesteps = "N/A"; // Default value when preparation time is not found
+                    System.out.println("Recipe Decription not found for " + url);
+                }
+                System.out.println("Recipe Description:"+recipesteps);
+                
+             //12. Preperation method
+              try {
+               prepmethod=homepage.getpreperationmethod();
+              }catch(Exception e)
+              {
+             	   prepmethod = "N/A";
+             	   System.out.println("No prepmethod Found for " + url);
+              }
+               System.out.println("Preperation Methos:"+prepmethod);
+                
+//             //13. nutrition
+               try {
+              nutrivalues=homepage.getnutritionvalues();
+               }catch (NoSuchElementException e) {
+            	   nutrivalues = "N/A"; // Default value when cooking time is not found
+                   System.out.println("Nutrition values not found for " + url);
+               }
+ 	    System.out.println("Nutrient values:"+nutrivalues); 
+                
+                
+//            	  14.Recipeurl
+            	   System.out.println("Recipe URL:"+url);
+            	   
+    
+             	   try {
+					db.insert_table(RecipeID,RecipeName,RecipeCategory,FoodCategory,Ingredients,preparationTime,cookingTime,Tags,servingsize,CusineCategory,recipesteps,prepmethod,nutrivalues,url);
+             		   //db.insert_table(RecipeID,Ingredients);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
-                     String totalTime;
-                     try {
-                         totalTime = homepage.gettotaltime();
-                     } catch (NoSuchElementException e) {
-                         totalTime = "N/A"; // Default value when total time is not found
-                         System.out.println("Total Time not found for " + url);
-                     }
-                     
-                     System.out.println("Preparation Time: " + preparationTime);
-                     System.out.println("Cooking Time: " + cookingTime);
-                     System.out.println("Total Time: " + totalTime);
-                     
-                     //nutrition
-                     
-                     String nutrivalues=homepage.getnutritionvalues();
-             	    System.out.println("Nutrient values:"+nutrivalues); 
+
                  }
-                 
+             }         
           	}
                   }
-         	}
-          }
+         	
+    
 
-  
+ 

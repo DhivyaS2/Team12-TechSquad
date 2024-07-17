@@ -2,11 +2,14 @@ package pageobjects;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import Utility.CommonFunctionutil;
+import Utility.ExcelReader;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -19,7 +22,8 @@ public class HomePage {
 	@FindBy(xpath="//a[@title='Recipea A to Z']")
 	WebElement recipe;
 	
-	@FindBy(xpath="//span[@id='ctl00_cntrightpanel_lblRecipeName']")
+	//@FindBy(xpath="//span[@id='ctl00_cntrightpanel_lblRecipeName']")
+	@FindBy(xpath="//*[@id='ctl00_cntrightpanel_lblRecipeName']")
 	WebElement recipetitle;
 	
 	@FindBy(className="rcc_recipename")
@@ -40,7 +44,7 @@ public class HomePage {
 	@FindBy(xpath="//time[@itemprop='totalTime']")
 	WebElement totaltime;
 	
-	@FindBy(xpath="//div[@style='text-align:right;padding-bottom:15px;']/a")
+	@FindBy(xpath="//div[@style='text-align:right;padding-bottom:15px;'][1]")
 	private List<WebElement> gotopages;
 	
 	@FindBy(xpath="//a[@itemprop='recipeCategory']")
@@ -55,6 +59,11 @@ public class HomePage {
 	WebElement recipemethod;
 	@FindBy(xpath="//div[@id='rcpnuts']")
 	WebElement nutrition;
+	@FindBy(xpath="rcc_caticons")
+	WebElement recipecategory;
+	
+	
+	
 //    @FindBy(xpath = "//table[@id='ctl00_cntleftpanel_mnuAlphabets']//a")
 //    private List<WebElement> alphabeticalIndexLinks;
 	
@@ -63,9 +72,12 @@ public class HomePage {
 	
 	private List<String> eliminationlist;
 	public String baseurl;
-	 public HomePage() throws IOException {
+
+	private List<String> cusineList;
+	
+	public HomePage() throws IOException {
 	        PageFactory.initElements(Browser.driver, this);
-	        this.eliminationlist = CommonFunctionutil.readElminationListFromPropertiesFile();
+	       //this.cusineList = CommonFunctionutil.readcusinedetails();
 	        this.baseurl=CommonFunctionutil.getUrl();
 	    }
 	 
@@ -87,13 +99,13 @@ public class HomePage {
 	        return alphabeticalIndexLinks;
 	    }
 
+	 public String getrecipecategory()
+	 {
+		 String category=recipecategory.getText().trim();
+		 return category;
+	 }
 	 
-	 
-	 
-	 
-	 
-	 
-	public void recipeall()
+	 public void recipeall()
 	{
 		recipe.click();
 		Browser.driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
@@ -141,14 +153,18 @@ public class HomePage {
 	}
 	
 	public String getrecipename()
-	{
-		WebElement name=recipetitle;
-		String recipename=name.getText().trim();
-		int pipeIndex = recipename.indexOf('|');
-	    if (pipeIndex != -1) {
-	        recipename = recipename.substring(0, pipeIndex).trim();
-	    }
-		return recipename;
+	
+{
+		String name=recipetitle.getText().trim();
+		return name;
+		
+//		WebElement name=recipetitle;
+//		String recipename=name.getText().trim();
+//		int pipeIndex = recipename.indexOf('|');
+//	    if (pipeIndex != -1) {
+//	        recipename = recipename.substring(0, pipeIndex).trim();
+//	    }
+//		return recipename;
 	}
 	
 	public String extractrecpieno(String url)
@@ -161,32 +177,48 @@ public class HomePage {
 		
 	}
 	
-    public List <String> getrecipeurls(int pageIndex) {
-    	
-    	
+    public List <String> getrecipeurls() {
+    	String alphabets[]= {"A"};
+    	int size;
     	List<String> recipeurls = new ArrayList<>();
-    	String pageurl = baseurl + "RecipeAtoZ.aspx?pageindex=" + pageIndex;
+    	//String pageurl = baseurl + "RecipeAtoZ.aspx?pageindex=" + pageIndex;
     	
-    	Browser.driver.get(pageurl);
+    	//Browser.driver.get(pageurl);
     	String currenturl = Browser.driver.getCurrentUrl();
-        
-        List<WebElement> recipeitems = Browser.driver.findElements(By.xpath("//div[@class='rcc_recipecard']"));
-        
+    	for(String alpha:alphabets) {
+    		int j=1;
+    		int k=1;
+    		//size=1;
+    		do {
+                Browser.driver.get("https://www.tarladalal.com/RecipeAtoZ.aspx?beginswith=" + alpha + "&pageindex=" + j);
+                //System.out.println(Browser.driver.getCurrentUrl());
 
-
-        for (WebElement items : recipeitems) {
+                
+    	List<WebElement> recipeitems = Browser.driver.findElements(By.xpath("//div[@class='rcc_recipecard']"));
+       for (WebElement items : recipeitems) {
            WebElement linkElement = items.findElement(By.tagName("a"));
             String url = linkElement.getAttribute("href");
            // System.out.println("urldata"+url);
             if (url != null && !url.isEmpty()) {
                 recipeurls.add(url);
             }
-        }
-        return recipeurls;
+            }
+                
+        j++;
+        k++;
+        //size++;
+        }while(k<2);
+       
+    		}  return recipeurls;
     }
     
     public List<WebElement>getrecipetags(){
     	return recipetaglist;
+    }
+    
+    public List<WebElement>gettheingredients()
+    {
+    	return ingredients;
     }
        
     public String gettotalservings()
@@ -206,15 +238,64 @@ public class HomePage {
         
         return ingredientslist;
     }
+    public String getrecipecatgories()
+    {
+    	WebElement element = Browser.driver.findElement(By.xpath("//div[@id='show_breadcrumb']"));
+    	 String elementText = element.getText();
+    	 List<String> keywords = Arrays.asList("Breakfast", "Lunch", "Snack", "Dinner");
+    	 for (String keyword : keywords) {
+             if (elementText.contains(keyword)) {
+                // System.out.println("Keyword found: " + keyword);
+             }
+            
+         }
+		return elementText;
+}
+    public String getfoodcatgories()
+    {
+    	WebElement breadcrumbElement = Browser.driver.findElement(By.xpath("//div[@id='show_breadcrumb']"));
+    	String breadcrumbText = breadcrumbElement.getText();
+
+    	 String foundItem = null;
+         String[] termsToCheck = {"veg", "non vegeterian", "vegan", "jain"};
+    	 for (String term : termsToCheck) {
+             if (breadcrumbText.toLowerCase().contains(term.toLowerCase())) {
+                 foundItem = term;
+                 break;
+             } 
+         }
+		return foundItem;
+}
     
     
+    public String getcusinelist() {
+		//List<String> cusineList = new ArrayList<>();
+		//cusineList = CommonFunctionutil.readcusinedetails();
+		WebElement breadcrumbElement = Browser.driver.findElement(By.xpath("//div[@id='show_breadcrumb']"));
+		String breadcrumbText = breadcrumbElement.getText();
+		String foundItem = null;
+        String[] termsToCheck = {"Indian", "Punjabi", "orissa", "Andhra","Kerala"};
+   	 for (String term : termsToCheck) {
+            if (breadcrumbText.toLowerCase().contains(term.toLowerCase())) {
+                foundItem = term;
+                break;
+            } 
+        }
+		return foundItem;
+    } 
 
 	public List<String> getleliminationList() {
 		List<String> eliminationlist = new ArrayList<>();
-     eliminationlist = CommonFunctionutil.readElminationListFromPropertiesFile();
-      
-      return this.eliminationlist;
+     //eliminationlist = CommonFunctionutil.readElminationListFromPropertiesFile();
+		eliminationlist=ExcelReader.ExcelReaderHelper("Final list for LFV Elimination ","Eliminate");
+		
+      return eliminationlist;
 	}
+	
+	//public List<String>get
+	
+	
+	
 	
 	public List<WebElement> returnpages()
 	{
