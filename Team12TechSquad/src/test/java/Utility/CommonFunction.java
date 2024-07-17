@@ -54,7 +54,6 @@ public class CommonFunction {
 	}
 	
 	
-	
 
 	public static String getexcelfilepath() throws IOException {
 		readConfig();
