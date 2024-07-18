@@ -48,7 +48,7 @@ public class LCHFRecipes {
 	 
 	
 	//Iterating through A to Z and storing the URLs in an Arraylist
-	//@Test(priority=0)
+	@Test(priority=0)
 	 public  void AScrappingAtoZ() throws InterruptedException, IOException {
 
 		System.out.println("Title "+ Browser.driver.getTitle());
@@ -193,7 +193,6 @@ public class LCHFRecipes {
 		ArrayList<String> ingrediantsList = new ArrayList<> ();
 		ArrayList<String> tagsList = new ArrayList<> ();
 		
-		System.out.println("Total URLs Collected is : "+AllrecipeUrlList.size());
 		LoggerLoad.logInfo("Total URLs Collected is : "+AllrecipeUrlList.size());
 		int checkCount=0;
 		for(String eachUrl : AllrecipeUrlList) {	
