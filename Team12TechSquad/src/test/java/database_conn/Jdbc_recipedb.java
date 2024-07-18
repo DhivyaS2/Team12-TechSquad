@@ -17,7 +17,7 @@ public class Jdbc_recipedb {
 	public static Connection connect;
 	Statement statement;
 	
-	String create_query="CREATE TABLE IF NOT EXISTS lfv_test(Recipe_no SERIAL NOT NULL, RecipeID VARCHAR(255), RecipeName VARCHAR(555),RecipeCategory VARCHAR(3000),FoodCategory VARCHAR(500),Ingredients VARCHAR(3000),preparationTime VARCHAR(355),cookingTime VARCHAR(355),Tags VARCHAR(3000),servingsize VARCHAR(400),CusineCategory VARCHAR(400),recipesteps VARCHAR(5000),prepmethod VARCHAR(5000),nutrivalues varchar(500),url VARCHAR(400));";
+	String create_query="CREATE TABLE IF NOT EXISTS lfv_eliminationdata(Recipe_no SERIAL NOT NULL, RecipeID VARCHAR(255), RecipeName VARCHAR(555),RecipeCategory VARCHAR(3000),FoodCategory VARCHAR(500),Ingredients VARCHAR(3000),preparationTime VARCHAR(355),cookingTime VARCHAR(355),Tags VARCHAR(3000),NoOfServings VARCHAR(400),CusineCategory VARCHAR(400),RecipeDescription VARCHAR(5000),Preparationmethod VARCHAR(5000),nutrientvalues varchar(500),url VARCHAR(400));";
 	//String create_query="CREATE TABLE LFV_Elimination1(RecipeID VARCHAR(255), RecipeName VARCHAR(255),RecipeCategory VARCHAR(1000),ingredient VARCHAR(2000),preparationTime VARCHAR(200));";
 	//String create_query="create table lfv_test(RecipeID VARCHAR(255),Ingredients VARCHAR(3000));";
 	@Test
@@ -36,39 +36,22 @@ public class Jdbc_recipedb {
             System.out.println("Failed to make connection!");
         }
 	}
-	@Test
-	public void create_table() throws SQLException {
-		statement=connect.createStatement();
-		statement.executeUpdate(create_query);
-		System.out.println("Table Created ");
-	}
+	//@Test
+//	public void create_table() throws SQLException {
+//		statement=connect.createStatement();
+//		statement.executeUpdate(create_query);
+//		System.out.println("Table Created ");
+//	}
 
-//		@Test
-//
-//	//public void insert_table( String RecipeID,String RecipeName,String RecipeCategory,List<String>ingredient,String preparationTime,String cookingTime,String Tags,String servingsize,String recipesteps,String prepmethod,String nutrivalues,String url) throws SQLException
-//			//String RecipeName,String RecipeCategory, List<String>ingredient,String preparationTime,String cookingTime,String Tags,String servingsize,String recipesteps,String prepmethod,String nutrivalues,String url) throws SQLException {
-//	public void insert_table(String RecipeID,String Ingredients) throws SQLException
-//	{
-//			//String insert_query="INSERT INTO LFV_Elimination1(RecipeID , RecipeName, RecipeCategory,ingredient,preparationTime)VALUES('"+RecipeID+"', '"+RecipeName+"','"+RecipeCategory+"','"+ingredient+",'"+preparationTime+"');";
-//			
-//		//	RecipeID,RecipeName,RecipeCategory,arrayingredients,preparationTime,cookingTime,Tags,servingsize,recipesteps,prepmethod,nutrivalues,url
-//		//String insert_query="INSERT INTO lfv_test(RecipeID , RecipeName, RecipeCategory,ingredient,preparationTime,cookingTime,Tags,servingsize,recipesteps,prepmethod,nutrivalues,url) VALUES('"+RecipeID+"', '"+RecipeName+"','"+RecipeCategory+"','"+ingredient+",'"+preparationTime+"','"+cookingTime+"','"+Tags+"','"+servingsize+"','"+recipesteps+"','"+prepmethod+"','"+nutrivalues+"','"+url+"');";
-//		String insert_query="INSERT INTO lfv_test(RecipeID,Ingredients)values('"+RecipeID+"','"+Ingredients+"');";
-//	statement=connect.createStatement();
-//		statement.executeUpdate(insert_query);
-//
-//		System.out.println("Value inserted ");
-//		
-//	}	
 
 	@Test
 	public void insert_table(String RecipeID, String RecipeName, String RecipeCategory, String FoodCategory, String Ingredients,
-	                         String preparationTime, String cookingTime, String Tags, String servingsize, String CusineCategory,
-	                         String recipesteps, String prepmethod, String nutrivalues, String url) throws SQLException {
+	                         String preparationTime, String cookingTime, String Tags, String NoOfServings, String CusineCategory,
+	                         String RecipeDescription, String Preparationmethod, String nutrientvalues, String url) throws SQLException {
 
-	    String insert_query = "INSERT INTO lfv_test(RecipeID, RecipeName, RecipeCategory, FoodCategory, Ingredients, " +
-	                          "preparationTime, cookingTime, Tags, servingsize, CusineCategory, " +
-	                          "recipesteps, prepmethod, nutrivalues, url) " +
+	    String insert_query = "INSERT INTO lfv_eliminationdata(RecipeID, RecipeName, RecipeCategory, FoodCategory, Ingredients, " +
+	                          "preparationTime, cookingTime, Tags, NoOfServings, CusineCategory, " +
+	                          "RecipeDescription, Preparationmethod, nutrientvalues, url) " +
 	                          "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	    PreparedStatement preparedStatement = connect.prepareStatement(insert_query);
@@ -80,11 +63,11 @@ public class Jdbc_recipedb {
 	    preparedStatement.setString(6, preparationTime);
 	    preparedStatement.setString(7, cookingTime);
 	    preparedStatement.setString(8, Tags);
-	    preparedStatement.setString(9, servingsize);
+	    preparedStatement.setString(9, NoOfServings);
 	    preparedStatement.setString(10, CusineCategory);
-	    preparedStatement.setString(11, recipesteps);
-	    preparedStatement.setString(12, prepmethod);
-	    preparedStatement.setString(13, nutrivalues);
+	    preparedStatement.setString(11, RecipeDescription);
+	    preparedStatement.setString(12, Preparationmethod);
+	    preparedStatement.setString(13, nutrientvalues);
 	    preparedStatement.setString(14, url);
 
 	    preparedStatement.executeUpdate();

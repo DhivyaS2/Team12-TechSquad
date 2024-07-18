@@ -72,7 +72,7 @@ public class HomePage {
 	
 	private List<String> eliminationlist;
 	public String baseurl;
-
+	int ksize=30;
 	private List<String> cusineList;
 	
 	public HomePage() throws IOException {
@@ -155,16 +155,16 @@ public class HomePage {
 	public String getrecipename()
 	
 {
-		String name=recipetitle.getText().trim();
-		return name;
+		//String name=recipetitle.getText().trim();
+		//return name;
 		
-//		WebElement name=recipetitle;
-//		String recipename=name.getText().trim();
-//		int pipeIndex = recipename.indexOf('|');
-//	    if (pipeIndex != -1) {
-//	        recipename = recipename.substring(0, pipeIndex).trim();
-//	    }
-//		return recipename;
+		WebElement name=recipetitle;
+		String recipename=name.getText().trim();
+		int pipeIndex = recipename.indexOf('|');
+	    if (pipeIndex != -1) {
+	        recipename = recipename.substring(0, pipeIndex).trim();
+	    }
+		return recipename;
 	}
 	
 	public String extractrecpieno(String url)
@@ -178,8 +178,9 @@ public class HomePage {
 	}
 	
     public List <String> getrecipeurls() {
-    	String alphabets[]= {"A"};
-    	int size;
+    	String alphabets[]= {"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
+    	
+    	
     	List<String> recipeurls = new ArrayList<>();
     	//String pageurl = baseurl + "RecipeAtoZ.aspx?pageindex=" + pageIndex;
     	
@@ -207,7 +208,7 @@ public class HomePage {
         j++;
         k++;
         //size++;
-        }while(k<2);
+        }while(k<=ksize);
        
     		}  return recipeurls;
     }
@@ -240,22 +241,28 @@ public class HomePage {
     }
     public String getrecipecatgories()
     {
-    	WebElement element = Browser.driver.findElement(By.xpath("//div[@id='show_breadcrumb']"));
+    	String returnkeyword="";
+    	WebElement element = Browser.driver.findElement(By.xpath("//div[@id='recipe_tags']"));
     	 String elementText = element.getText();
     	 List<String> keywords = Arrays.asList("Breakfast", "Lunch", "Snack", "Dinner");
     	 for (String keyword : keywords) {
              if (elementText.contains(keyword)) {
-                // System.out.println("Keyword found: " + keyword);
+                //System.out.println("Keyword found: " + keyword);
+                returnkeyword=keyword;
              }
-            
+                else
+                {
+                	returnkeyword="CategoryNotAvailable";
+             }
+             
          }
-		return elementText;
+		return returnkeyword ;
 }
     public String getfoodcatgories()
     {
     	WebElement breadcrumbElement = Browser.driver.findElement(By.xpath("//div[@id='show_breadcrumb']"));
     	String breadcrumbText = breadcrumbElement.getText();
-
+    	//System.out.println(breadcrumbText);
     	 String foundItem = null;
          String[] termsToCheck = {"veg", "non vegeterian", "vegan", "jain"};
     	 for (String term : termsToCheck) {
@@ -274,7 +281,7 @@ public class HomePage {
 		WebElement breadcrumbElement = Browser.driver.findElement(By.xpath("//div[@id='show_breadcrumb']"));
 		String breadcrumbText = breadcrumbElement.getText();
 		String foundItem = null;
-        String[] termsToCheck = {"Indian", "Punjabi", "orissa", "Andhra","Kerala"};
+        String[] termsToCheck = {"Gujarati","Italian", "Punjabi", "Maharashtrian", "South Indian","Chinese","Rajasthani"};
    	 for (String term : termsToCheck) {
             if (breadcrumbText.toLowerCase().contains(term.toLowerCase())) {
                 foundItem = term;
