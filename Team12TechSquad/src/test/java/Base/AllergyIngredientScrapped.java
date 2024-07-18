@@ -86,7 +86,7 @@ public class AllergyIngredientScrapped {
 			 if(containsallergyIngredients==true) {
 				 break breaklevel;
 			 }
-			 
+			
 				
 		  }
 		  
