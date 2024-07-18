@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-import Utility.CommonFunction;
+import Utility.PropertyFunction;
 
 
 public class Browser {
@@ -14,13 +14,15 @@ public class Browser {
 
 	String browser,url,head;
 	
-	
+public Browser() throws IOException {
+	 PropertyFunction.readConfig();
+}
 
 public void beforescraping() throws IOException {
 
-			browser = CommonFunction.getBrowser();
+	       	browser = PropertyFunction.getBrowser();
 			
-			head=CommonFunction.getBrowserOptions();
+			head=PropertyFunction.getBrowserOptions();
 			if(browser.equals("chrome")) {
 				ChromeOptions chromeOptions = new ChromeOptions();
 		        
@@ -39,9 +41,14 @@ public void beforescraping() throws IOException {
 		public static void quitdriver() {
 			driver.close();
 		}
-				public void launchsite() throws IOException {
-			url = CommonFunction.getUrl();
-			driver.get(url);
+			public void launchsite() throws IOException {
+			url = PropertyFunction.getUrl();
+			try {
+			driver.get(url);}
+			catch(Exception e) {
+				System.out.println("Home URL is not available");
+				Browser.driver.navigate().refresh();
+			}
 	
 		}
 		

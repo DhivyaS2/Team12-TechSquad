@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Suite" parallel="false" >
+  <test thread-count="5" name="Test1">
+    <classes>
+      <class name="Utility.DataDriven"/>
+      <class name="Utility.PropertyFunction"/>
+      <class name="JDBC.CRUD_DB"/>
+        <class name="POM.recipes"/>
+      <class name="scraping.Browser"/>
+      <class name="scraping.Not_fully_vegan"/>
+       <class name="scraping.Allergies"/>
+    </classes>
+  
+  
+  
+  </test> <!-- Test -->
+</suite> <!-- Suite -->

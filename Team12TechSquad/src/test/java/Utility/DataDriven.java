@@ -1,4 +1,5 @@
 package Utility;
+import org.testng.annotations.Test;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,20 +11,23 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.testng.annotations.Test;
+
+import com.google.common.collect.Table.Cell;
+import com.microsoft.schemas.office.visio.x2012.main.CellType;
 public class DataDriven {
 	static String path;
-	static List<String> list = new ArrayList<String>();
+	
 @Test
-	public static List<String> reader() throws IOException { 
-		
-    path=CommonFunction.getPath();
+	public static List<String> reader(String Sheet_name, String Col_name) throws IOException { 
+	 List<String> list = new ArrayList<String>();	
+    path=PropertyFunction.getPath();
 	FileInputStream file = new FileInputStream(path);
 	XSSFWorkbook workbook=new XSSFWorkbook(file);
 	 //System.out.println(path);
 	int count=workbook.getNumberOfSheets();
 
 	for(int k=0;k<count;k++) {
-	if(workbook.getSheetName(k).equalsIgnoreCase("LFV_Elimination")) {//irrespective of case(upper/lower)
+	if(workbook.getSheetName(k).equalsIgnoreCase(Sheet_name)) {//irrespective of case(upper/lower)
 
 	    XSSFSheet sheet=workbook.getSheetAt(k);
 	    DataFormatter dataf = new DataFormatter();
@@ -33,7 +37,7 @@ public class DataDriven {
         for(int j=0;j<cols;j++) {
          XSSFRow first_row = sheet.getRow(1);
          
-        if(dataf.formatCellValue(first_row.getCell(j)).equalsIgnoreCase("To_Add_if_not_fully_vegan")) //reachs specific column
+        if(dataf.formatCellValue(first_row.getCell(j)).equalsIgnoreCase(Col_name)) //reachs specific column
         {	
 	    for(int i=2; i<=rows;i++) {
         XSSFRow row = sheet.getRow(i);// reads each row under column header
